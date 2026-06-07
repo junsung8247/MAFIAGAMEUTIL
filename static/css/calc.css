@@ -1,0 +1,108 @@
+/* 계산기 페이지 전용 스타일 */
+
+/* 계산기 메뉴 가로 배치 */
+#calcMenu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+#calcMenu .col-md-3 {
+    flex: 0 0 calc(25% - 1rem);
+    max-width: calc(25% - 1rem);
+}
+
+@media (max-width: 768px) {
+    #calcMenu .col-md-3 {
+        flex: 0 0 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 576px) {
+    #calcMenu .col-md-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* 계산기 메뉴 버튼 스타일 */
+.calc-menu-btn {
+    height: 120px;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+}
+
+.calc-icon-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.calc-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.calc-menu-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 카드 강화 계산기 토글 버튼 */
+.card-target-toggle {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.toggle-container {
+    display: inline-flex;
+    background: #e9ecef;
+    border-radius: 50px;
+    padding: 4px;
+    gap: 4px;
+}
+
+body.dark-mode .toggle-container {
+    background: #1f2937;
+}
+
+.toggle-btn {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 50px;
+    background: transparent;
+    color: #6c757d;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.toggle-btn:hover {
+    color: #495057;
+}
+
+body.dark-mode .toggle-btn:hover {
+    color: #f3f4f6;
+}
+
+.toggle-btn.active {
+    background: var(--primary-color, #dc2626);
+    color: white;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+.toggle-btn:focus {
+    outline: none;
+}

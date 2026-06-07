@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+
+  <!-- Base Styles -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/common-modern.css">
+  <link rel="stylesheet" href="/static/css/darkmode.css">
+  <link rel="stylesheet" href="/static/css/profile.css">
+  
+  <title>마피아계산기 - 커스텀 프로필</title>
+  
+  <meta property="og:title" content="마피아계산기 - 커스텀 프로필">
+  <meta property="og:description" content="나만의 마피아42 프로필 카드를 커스텀 디자인하고 고화질 이미지로 저장해 보세요.">
+</head>
+<body>
+  <!-- 모던 네비게이션 바 -->
+  <nav class="modern-nav" id="modernNav">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <a href="/" class="brand-logo">마피아계산기</a>
+      </div>
+      
+      <!-- 햄버거 메뉴 버튼 (모바일) -->
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- 데스크톱 메뉴 -->
+      <div class="nav-menu desktop-menu">
+        <div id="auth-buttons">
+          <a href="#" class="nav-link" onclick="window.authManager.signIn(); return false;">로그인</a>
+          <a href="#" class="nav-btn" onclick="window.authManager.signIn(); return false;">회원가입</a>
+        </div>
+        
+        <div class="user-menu" id="user-menu" style="display: none;">
+          <div class="user-menu-trigger" id="user-menu-trigger">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-menu-username">사용자</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="user-menu-dropdown" id="user-menu-dropdown">
+            <button class="user-menu-item" onclick="alert('데모 모드입니다.');">내 정보</button>
+            <button class="user-menu-item" onclick="alert('데모 모드입니다.');">내 아이템</button>
+            <div class="user-menu-divider"></div>
+            <button class="user-menu-item logout" id="logout-btn">로그아웃</button>
+          </div>
+        </div>
+        
+        <a href="#" class="theme-toggle" id="themeToggle">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 모바일 사이드 메뉴 -->
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-header">
+      <h3>메뉴</h3>
+      <button class="close-menu" id="closeMenu" aria-label="메뉴 닫기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="side-menu-content">
+      <div class="menu-user-section" id="mobile-user-section">
+        <div class="menu-auth-buttons" id="mobile-auth-buttons">
+          <a href="#" class="menu-auth-btn signin" onclick="window.authManager.signIn(); return false;">로그인</a>
+          <a href="#" class="menu-auth-btn signup" onclick="window.authManager.signIn(); return false;">회원가입</a>
+        </div>
+        <div class="menu-user-profile" id="mobile-user-profile" style="display: none;">
+          <div class="menu-user-info">
+            <div class="menu-user-avatar" id="mobile-user-avatar">U</div>
+            <div class="menu-user-details">
+              <div class="menu-user-name" id="mobile-user-name">사용자</div>
+              <div class="menu-user-email" id="mobile-user-email">user@example.com</div>
+            </div>
+          </div>
+          <button class="menu-user-action logout" id="mobile-logout-btn">로그아웃</button>
+        </div>
+      </div>
+
+      <div class="menu-category">
+        <h4>기능 메뉴</h4>
+        <a href="/calc" class="menu-item">
+          <span class="menu-icon">🧮</span>
+          <span>계산기 (4종)</span>
+        </a>
+        <a href="/profile" class="menu-item">
+          <span class="menu-icon">👤</span>
+          <span>커스텀 프로필</span>
+        </a>
+      </div>
+
+      <div class="menu-category">
+        <h4>확률표</h4>
+        <a href="/randbox" class="menu-item">
+          <span class="menu-icon">🎁</span>
+          <span>이벤트 상자 확률표</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- 프로필 커스터마이저 컨테이너 -->
+  <div class="container-fluid profile-customizer-container page-container">
+    <div class="header-section">
+      <h1 class="page-title">커스텀 프로필 카드 제작</h1>
+      <p class="page-subtitle">마피아42의 모든 프로필 에셋들을 조합하여 나만의 시그니처 프로필 카드를 만들어보세요.</p>
+    </div>
+
+    <div class="row customizer-row">
+      <!-- 좌측: 실시간 프로필 미리보기 및 입력창 -->
+      <div class="col-lg-5 col-md-12 preview-column">
+        <div class="sticky-preview-wrapper">
+          <div class="card preview-card-panel">
+            <div class="card-header">👀 실시간 미리보기</div>
+            <div class="card-body d-flex flex-column align-items-center">
+              
+              <!-- 마피아42 실제 프로필 레이아웃을 본뜬 카드 -->
+              <div class="mafia-profile-card" id="mafiaProfileCard">
+                <!-- 1. 배경 (ProfileBackground) -->
+                <img id="layer-ProfileBackground" class="profile-layer z-1" src="" alt="">
+                
+                <!-- 2. 헤더 데코 (Header) -->
+                <img id="layer-Header" class="profile-layer z-2" src="" alt="">
+                
+                <!-- 3. 캐릭터 스킨 (Skin) -->
+                <img id="layer-Skin" class="profile-layer z-3" src="" alt="">
+                
+                <!-- 4. 테두리 프레임 (Frame) -->
+                <img id="layer-Frame" class="profile-layer z-4" src="" alt="">
+
+                <!-- 5. 컬렉션 엠블럼 (Collection) -->
+                <img id="layer-Collection" class="profile-layer z-5" src="" alt="">
+
+                <!-- 6. 직업 배지 (RoleBadge) -->
+                <img id="layer-RoleBadge" class="profile-layer z-6" src="" alt="">
+
+                <!-- 7. 보석 (Jewel) -->
+                <img id="layer-Jewel" class="profile-layer z-7" src="" alt="">
+
+                <!-- 8. 명찰 테두리 (NameTag) -->
+                <img id="layer-NameTag" class="profile-layer z-8" src="" alt="">
+
+                <!-- 9. 레벨 / 명성 / 승률 데코 아이콘들 -->
+                <img id="layer-Level" class="profile-layer z-9" src="" alt="">
+                <img id="layer-Fame" class="profile-layer z-9" src="" alt="">
+                <img id="layer-RP" class="profile-layer z-9" src="" alt="">
+                <img id="layer-Rate" class="profile-layer z-9" src="" alt="">
+                <img id="layer-Heart" class="profile-layer z-9" src="" alt="">
+                <img id="layer-Mentor" class="profile-layer z-9" src="" alt="">
+                <img id="layer-Guild" class="profile-layer z-9" src="" alt="">
+
+                <!-- 10. 텍스트 레이어 (닉네임, 레벨 수치, 명성 수치 등) -->
+                <div class="text-layer z-10">
+                  <div class="txt-nickname" id="txt-nickname">닉네임</div>
+                  <div class="txt-guild" id="txt-guild">길드이름</div>
+                  <div class="txt-level" id="txt-level">Lv.42</div>
+                  <div class="txt-fame" id="txt-fame">명성 1420</div>
+                  <div class="txt-rp" id="txt-rp">RP 2500</div>
+                  <div class="txt-rate" id="txt-rate">승률 52.4%</div>
+                  <div class="txt-heart" id="txt-heart">42개</div>
+                </div>
+              </div>
+
+              <div class="download-action-container mt-4 w-100">
+                <button class="btn btn-primary btn-block btn-lg" onclick="downloadProfileImage()">
+                  💾 프로필 이미지 다운로드 (PNG)
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 텍스트 정보 입력 카드 -->
+          <div class="card mt-4 info-inputs-card">
+            <div class="card-header">✍️ 텍스트 정보 입력</div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="input-nickname">닉네임</label>
+                  <input type="text" id="input-nickname" class="form-control" value="마피아마스터">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="input-guild">길드명</label>
+                  <input type="text" id="input-guild" class="form-control" value="antigravity">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="input-level">레벨</label>
+                  <input type="number" id="input-level" class="form-control" value="42">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="input-fame">명성</label>
+                  <input type="number" id="input-fame" class="form-control" value="1420">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="input-rp">RP</label>
+                  <input type="number" id="input-rp" class="form-control" value="2500">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="input-rate">승률 (%)</label>
+                  <input type="text" id="input-rate" class="form-control" value="52.4">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="input-heart">엽서 수</label>
+                  <input type="number" id="input-heart" class="form-control" value="42">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 우측: 자산 선택 탭 및 아이템 그리드 리스트 -->
+      <div class="col-lg-7 col-md-12 selection-column">
+        <div class="card selector-card-panel">
+          <div class="card-header">🎨 에셋 선택기</div>
+          
+          <!-- 카테고리 탭 (가로 스크롤 가능) -->
+          <div class="category-tabs-wrapper">
+            <div class="category-tabs" id="categoryTabs">
+              <!-- JS로 동적 생성 또는 수동 생성 -->
+              <button class="cat-tab-btn active" data-category="ProfileBackground">배경</button>
+              <button class="cat-tab-btn" data-category="Skin">스킨</button>
+              <button class="cat-tab-btn" data-category="Frame">프레임</button>
+              <button class="cat-tab-btn" data-category="Header">헤더 장식</button>
+              <button class="cat-tab-btn" data-category="NameTag">명찰</button>
+              <button class="cat-tab-btn" data-category="Jewel">보석</button>
+              <button class="cat-tab-btn" data-category="RoleBadge">직업 배지</button>
+              <button class="cat-tab-btn" data-category="Collection">컬렉션</button>
+              <button class="cat-tab-btn" data-category="Level">레벨 심볼</button>
+              <button class="cat-tab-btn" data-category="Fame">명성 심볼</button>
+              <button class="cat-tab-btn" data-category="RP">RP 심볼</button>
+              <button class="cat-tab-btn" data-category="Rate">승률 심볼</button>
+              <button class="cat-tab-btn" data-category="Heart">엽서 심볼</button>
+              <button class="cat-tab-btn" data-category="Mentor">멘토 심볼</button>
+              <button class="cat-tab-btn" data-category="Guild">길드 심볼</button>
+            </div>
+          </div>
+
+          <!-- 에셋 아이템 그리드 영역 -->
+          <div class="card-body items-grid-container">
+            <!-- 검색 필터 -->
+            <div class="mb-3">
+              <input type="text" id="asset-search" class="form-control" placeholder="아이템 이름 검색...">
+            </div>
+
+            <!-- 아이템 로더 스피너 -->
+            <div id="items-loader" class="text-center my-5" style="display: none;">
+              <div class="spinner-border text-danger" role="status">
+                <span class="sr-only">로딩 중...</span>
+              </div>
+            </div>
+
+            <!-- 실제 아이템 그리드 -->
+            <div class="assets-grid" id="assetsGrid">
+              <!-- JS로 동적 주입 -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer class="modern-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>마피아계산기</h3>
+        <p>마피아42 서드파티 서비스</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/js/darkmode.js"></script>
+  <script src="/static/js/common-modern.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/profile.js"></script>
+</body>
+</html>

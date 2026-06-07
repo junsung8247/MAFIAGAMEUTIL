@@ -1,0 +1,14 @@
+{
+  "name": "mafia-calculator",
+  "version": "1.0.0",
+  "description": "마피아42 이벤트 상자 확률표 및 시뮬레이터",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
+  }
+}

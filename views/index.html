@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마피아계산기 - 마피아42 서드파티 서비스</title>
+  
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/static/css/common-modern.css">
+  <link rel="stylesheet" href="/static/css/modern-index.css">
+  <link rel="stylesheet" href="/static/css/darkmode.css">
+  <link rel="stylesheet" href="/static/css/alerts.css">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <meta property="og:title" content="마피아계산기">
+  <meta property="og:description" content="마피아42 서드파티 서비스">
+</head>
+<body>
+  <!-- 모던 네비게이션 바 -->
+  <nav class="modern-nav" id="modernNav">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <a href="/" class="brand-logo">마피아계산기</a>
+      </div>
+      
+      <!-- 햄버거 메뉴 버튼 (모바일) -->
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- 데스크톱 메뉴 -->
+      <div class="nav-menu desktop-menu">
+        <!-- 인증 버튼 (로그인 전) -->
+        <div id="auth-buttons">
+          <a href="#" class="nav-link" onclick="window.authManager.signIn(); return false;">로그인</a>
+          <a href="#" class="nav-btn" onclick="window.authManager.signIn(); return false;">회원가입</a>
+        </div>
+        
+        <!-- 사용자 메뉴 (로그인 후) -->
+        <div class="user-menu" id="user-menu" style="display: none;">
+          <div class="user-menu-trigger" id="user-menu-trigger">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-menu-username">사용자</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="user-menu-dropdown" id="user-menu-dropdown">
+            <button class="user-menu-item" onclick="alert('데모 모드입니다.');">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>내 정보</span>
+            </button>
+            <button class="user-menu-item" onclick="alert('데모 모드입니다.');">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <path d="M9 3v18"></path>
+                <path d="M16 3v18"></path>
+              </svg>
+              <span>내 아이템</span>
+            </button>
+            <div class="user-menu-divider"></div>
+            <button class="user-menu-item logout" id="logout-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>로그아웃</span>
+            </button>
+          </div>
+        </div>
+        
+        <a href="#" class="theme-toggle" id="themeToggle">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 모바일 사이드 메뉴 -->
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-header">
+      <h3>메뉴</h3>
+      <button class="close-menu" id="closeMenu" aria-label="메뉴 닫기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="side-menu-content">
+      <div class="menu-user-section" id="mobile-user-section">
+        <div class="menu-auth-buttons" id="mobile-auth-buttons">
+          <a href="#" class="menu-auth-btn signin" onclick="window.authManager.signIn(); return false;">로그인</a>
+          <a href="#" class="menu-auth-btn signup" onclick="window.authManager.signIn(); return false;">회원가입</a>
+        </div>
+        <div class="menu-user-profile" id="mobile-user-profile" style="display: none;">
+          <div class="menu-user-info">
+            <div class="menu-user-avatar" id="mobile-user-avatar">U</div>
+            <div class="menu-user-details">
+              <div class="menu-user-name" id="mobile-user-name">사용자</div>
+              <div class="menu-user-email" id="mobile-user-email">user@example.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-category">
+        <h4>기능 메뉴</h4>
+        <a href="/calc" class="menu-item">
+          <span class="menu-icon">🧮</span>
+          <span>계산기 (4종)</span>
+        </a>
+        <a href="/profile" class="menu-item">
+          <span class="menu-icon">👤</span>
+          <span>커스텀 프로필</span>
+        </a>
+      </div>
+
+      <div class="menu-category">
+        <h4>확률표</h4>
+        <a href="/randbox" class="menu-item">
+          <span class="menu-icon">🎁</span>
+          <span>이벤트 상자 확률표</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+
+
+  <!-- 히어로 섹션 -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="hero-title-main">마피아계산기</span>
+        <span class="hero-title-sub">마피아42 서드파티 서비스</span>
+      </h1>
+      <p class="hero-description">
+        시뮬레이터, 계산기, 커스터마이징 도구까지<br>
+        필요한 모든 기능을 한 곳에서
+      </p>
+    </div>
+    
+    <div class="hero-bg">
+      <div class="hero-shape shape-1"></div>
+      <div class="hero-shape shape-2"></div>
+      <div class="hero-shape shape-3"></div>
+    </div>
+  </section>
+
+  <!-- 주요 기능 카드 섹션 -->
+  <section class="features-section">
+    <div class="section-container">
+      <h2 class="section-title">주요 기능</h2>
+      <p class="section-subtitle">가장 인기있는 도구들을 만나보세요</p>
+      
+      <div class="features-grid">
+        <!-- 이벤트 상자 확률표 -->
+        <a href="/randbox" class="feature-card">
+          <div class="feature-card-icon">🎁</div>
+          <h3 class="feature-card-title">이벤트 상자 확률표</h3>
+          <p class="feature-card-description">장착 아이템 확률 자동 계산 및 뽑기 시뮬레이터</p>
+          <div class="feature-card-tag" style="background: var(--secondary-color); color: white; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 11px; font-weight: 700; margin-top: 10px;">HOT</div>
+          <div class="feature-card-arrow" style="margin-top: 15px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 계산기 -->
+        <a href="/calc" class="feature-card">
+          <div class="feature-card-icon">🧮</div>
+          <h3 class="feature-card-title">계산기</h3>
+          <p class="feature-card-description">마피아42 다양한 유틸리티 수치 계산기</p>
+          <div class="feature-card-arrow" style="margin-top: 15px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+
+        <!-- 커스텀 프로필 -->
+        <a href="/profile" class="feature-card">
+          <div class="feature-card-icon">👤</div>
+          <h3 class="feature-card-title">커스텀 프로필</h3>
+          <p class="feature-card-description">나만의 프로필 카드를 커스텀 디자인</p>
+          <div class="feature-card-arrow" style="margin-top: 15px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="modern-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>마피아계산기</h3>
+        <p>마피아42 서드파티 서비스</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/static/js/modern-index.js"></script>
+  <script src="/static/js/darkmode.js"></script>
+  <script src="/static/js/auth.js"></script>
+</body>
+</html>

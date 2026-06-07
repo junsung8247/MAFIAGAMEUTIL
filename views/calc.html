@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS (일부 UI 구조 지원) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+
+  <!-- Base Styles -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/common-modern.css">
+  <link rel="stylesheet" href="/static/css/darkmode.css">
+  <link rel="stylesheet" href="/static/css/calc.css">
+  
+  <title>마피아계산기 - 계산기</title>
+  
+  <meta property="og:title" content="마피아계산기 - 계산기">
+  <meta property="og:description" content="마피아42 우체통, 카드 강화, 출석 보상, 권위의 엽서 실시간 계산기">
+</head>
+<body>
+  <!-- 모던 네비게이션 바 -->
+  <nav class="modern-nav" id="modernNav">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <a href="/" class="brand-logo">마피아계산기</a>
+      </div>
+      
+      <!-- 햄버거 메뉴 버튼 (모바일) -->
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- 데스크톱 메뉴 -->
+      <div class="nav-menu desktop-menu">
+        <div id="auth-buttons">
+          <a href="#" class="nav-link" onclick="window.authManager.signIn(); return false;">로그인</a>
+          <a href="#" class="nav-btn" onclick="window.authManager.signIn(); return false;">회원가입</a>
+        </div>
+        
+        <div class="user-menu" id="user-menu" style="display: none;">
+          <div class="user-menu-trigger" id="user-menu-trigger">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-menu-username">사용자</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="user-menu-dropdown" id="user-menu-dropdown">
+            <button class="user-menu-item" onclick="alert('데모 모드입니다.');">내 정보</button>
+            <button class="user-menu-item" onclick="alert('데모 모드입니다.');">내 아이템</button>
+            <div class="user-menu-divider"></div>
+            <button class="user-menu-item logout" id="logout-btn">로그아웃</button>
+          </div>
+        </div>
+        
+        <a href="#" class="theme-toggle" id="themeToggle">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 모바일 사이드 메뉴 -->
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-header">
+      <h3>메뉴</h3>
+      <button class="close-menu" id="closeMenu" aria-label="메뉴 닫기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="side-menu-content">
+      <div class="menu-user-section" id="mobile-user-section">
+        <div class="menu-auth-buttons" id="mobile-auth-buttons">
+          <a href="#" class="menu-auth-btn signin" onclick="window.authManager.signIn(); return false;">로그인</a>
+          <a href="#" class="menu-auth-btn signup" onclick="window.authManager.signIn(); return false;">회원가입</a>
+        </div>
+        <div class="menu-user-profile" id="mobile-user-profile" style="display: none;">
+          <div class="menu-user-info">
+            <div class="menu-user-avatar" id="mobile-user-avatar">U</div>
+            <div class="menu-user-details">
+              <div class="menu-user-name" id="mobile-user-name">사용자</div>
+              <div class="menu-user-email" id="mobile-user-email">user@example.com</div>
+            </div>
+          </div>
+          <button class="menu-user-action logout" id="mobile-logout-btn">로그아웃</button>
+        </div>
+      </div>
+
+      <div class="menu-category">
+        <h4>기능 메뉴</h4>
+        <a href="/calc" class="menu-item">
+          <span class="menu-icon">🧮</span>
+          <span>계산기 (4종)</span>
+        </a>
+        <a href="/profile" class="menu-item">
+          <span class="menu-icon">👤</span>
+          <span>커스텀 프로필</span>
+        </a>
+      </div>
+
+      <div class="menu-category">
+        <h4>확률표</h4>
+        <a href="/randbox" class="menu-item">
+          <span class="menu-icon">🎁</span>
+          <span>이벤트 상자 확률표</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- 계산기 컨텐츠 영역 -->
+  <div class="container calc-container page-container">
+    <div class="header-section">
+      <h1 class="main-title">마피아42 계산기</h1>
+      <p class="subtitle">우체통, 카드 강화, 출석 보상, 권위의 엽서 공식을 손쉽게 계산해 보세요.</p>
+    </div>
+
+    <!-- 계산기 대분류 메뉴 (가로 배치) -->
+    <div id="calcMenu" class="row">
+      <div class="col-md-3">
+        <div class="calc-menu-btn active" data-tab="mailbox">
+          <img src="/static/images/GameResources/etc/헤르메스의 엽서가방.webp" class="calc-icon-img" alt="우체통" onerror="this.src='https://img.icons8.com/color/96/post-box.png'">
+          <div class="calc-title">우체통 계산기</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="calc-menu-btn" data-tab="upgrade">
+          <img src="/static/images/GameResources/Duelcard/6티어 카드.webp" class="calc-icon-img" alt="강화" onerror="this.src='https://img.icons8.com/color/96/up.png'">
+          <div class="calc-title">카드 강화 계산기</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="calc-menu-btn" data-tab="attendance">
+          <img src="/static/images/GameResources/Postcard/일반 엽서.webp" class="calc-icon-img" alt="출석" onerror="this.src='https://img.icons8.com/color/96/checked-checkbox.png'">
+          <div class="calc-title">출석 보상 계산기</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="calc-menu-btn" data-tab="postcard">
+          <img src="/static/images/GameResources/Postcard/권위의 엽서.webp" class="calc-icon-img" alt="엽서" onerror="this.src='https://img.icons8.com/color/96/mail.png'">
+          <div class="calc-title">권위의 엽서 계산기</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 계산기 콘텐츠 본문 -->
+    <div class="card calc-content-card">
+      <div class="card-body">
+        
+        <!-- 1. 우체통 계산기 탭 -->
+        <div id="tab-mailbox" class="tab-pane-content active">
+          <h3>📮 우체통 확장 계산기</h3>
+          <p class="tab-desc">기본 우체통(42칸)에서 원하는 목표 칸수까지 확장하는 데 필요한 총 루블과 확장 횟수를 계산합니다. (1회당 10칸 확장)</p>
+          
+          <div class="form-group row">
+            <label for="mail-current" class="col-sm-3 col-form-label">현재 칸 수 (42 이상, 2로 끝나는 수)</label>
+            <div class="col-sm-9">
+              <input type="number" id="mail-current" class="form-control" value="42" min="42" step="10">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mail-target" class="col-sm-3 col-form-label">목표 칸 수</label>
+            <div class="col-sm-9">
+              <input type="number" id="mail-target" class="form-control" value="102" min="52" step="10">
+            </div>
+          </div>
+          
+          <div class="calc-btn-container text-right">
+            <button class="btn btn-primary" onclick="calcMailbox()">계산하기</button>
+          </div>
+
+          <div id="mailbox-result" class="result-area mt-4" style="display: none;">
+            <h4>📊 계산 결과</h4>
+            <div class="result-box">
+              <div class="result-item"><strong>총 확장 횟수:</strong> <span class="highlight-val" id="res-mail-count">0</span>회</div>
+              <div class="result-item"><strong>총 소요 루블:</strong> <span class="highlight-val" id="res-mail-rubles">0</span> 루블</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. 카드 강화 계산기 탭 -->
+        <div id="tab-upgrade" class="tab-pane-content">
+          <h3>🎴 카드 강화 계산기</h3>
+          <p class="tab-desc">카드 강화를 위해 1티어 카드가 총 몇 장 필요하며, 각 티어별 승급에 소모되는 총 루블 재화를 연산합니다.</p>
+          
+          <div class="form-group row">
+            <label for="upgrade-current" class="col-sm-3 col-form-label">현재 티어</label>
+            <div class="col-sm-9">
+              <select id="upgrade-current" class="form-control">
+                <option value="1">1티어</option>
+                <option value="2">2티어</option>
+                <option value="3">3티어</option>
+                <option value="4">4티어</option>
+                <option value="5">5티어</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="upgrade-target" class="col-sm-3 col-form-label">목표 티어</label>
+            <div class="col-sm-9">
+              <select id="upgrade-target" class="form-control">
+                <option value="2">2티어</option>
+                <option value="3">3티어</option>
+                <option value="4" selected>4티어</option>
+                <option value="5">5티어</option>
+                <option value="6">6티어</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 할인 테두리 여부 -->
+          <div class="card-target-toggle">
+            <div class="toggle-container">
+              <button type="button" class="toggle-btn active" id="discount-none" onclick="setDiscount(false)">할인 없음</button>
+              <button type="button" class="toggle-btn" id="discount-applied" onclick="setDiscount(true)">10% 할인 테두리 적용</button>
+            </div>
+          </div>
+
+          <div class="calc-btn-container text-right">
+            <button class="btn btn-primary" onclick="calcUpgrade()">계산하기</button>
+          </div>
+
+          <div id="upgrade-result" class="result-area mt-4" style="display: none;">
+            <h4>📊 계산 결과</h4>
+            <div class="result-box">
+              <div class="result-item"><strong>필요한 1티어 카드 개수 (본체 포함):</strong> <span class="highlight-val" id="res-upgrade-cards">0</span> 장</div>
+              <div class="result-item"><strong>총 승급 비용:</strong> <span class="highlight-val" id="res-upgrade-rubles">0</span> 루블</div>
+              <hr>
+              <div class="detail-log" id="res-upgrade-details"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. 출석 보상 계산기 탭 -->
+        <div id="tab-attendance" class="tab-pane-content">
+          <h3>🎁 출석 보상 계산기</h3>
+          <p class="tab-desc">현재 내 명성 수치에 비례하여 지급받는 추가 루블(명성 1당 100루블) 및 추가 루나(명성 42당 1루나)를 연산합니다. 길드 출석 보상 버프를 추가로 반영할 수 있습니다.</p>
+          
+          <div class="form-group row">
+            <label for="att-fame" class="col-sm-3 col-form-label">현재 내 명성</label>
+            <div class="col-sm-9">
+              <input type="number" id="att-fame" class="form-control" value="1000" min="0">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="att-guild-buff" class="col-sm-3 col-form-label">길드 출석 버프 (%)</label>
+            <div class="col-sm-9">
+              <input type="number" id="att-guild-buff" class="form-control" value="0" min="0" max="100">
+            </div>
+          </div>
+
+          <div class="calc-btn-container text-right">
+            <button class="btn btn-primary" onclick="calcAttendance()">계산하기</button>
+          </div>
+
+          <div id="attendance-result" class="result-area mt-4" style="display: none;">
+            <h4>📊 계산 결과</h4>
+            <div class="result-box">
+              <div class="result-item"><strong>추가 출석 루블 (명성):</strong> <span class="highlight-val" id="res-att-ruble-fame">0</span> 루블</div>
+              <div class="result-item"><strong>길드 버프 추가 루블:</strong> <span class="highlight-val" id="res-att-ruble-guild">0</span> 루블</div>
+              <div class="result-item"><strong>최종 추가 출석 루블:</strong> <span class="highlight-val" id="res-att-ruble-total">0</span> 루블</div>
+              <div class="result-item"><strong>추가 출석 루나 (명성 / 42):</strong> <span class="highlight-val" id="res-att-luna">0</span> 루나</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 권위의 엽서 계산기 탭 -->
+        <div id="tab-postcard" class="tab-pane-content">
+          <h3>💌 권위의 엽서 차감 계산기</h3>
+          <p class="tab-desc">보내는 사람의 명성을 기준으로 상대방의 명성을 15일 동안 차감시키는 권위의 엽서 공식을 시뮬레이션합니다. (공식: <code>20 + 1.2 * √명성</code>)</p>
+          
+          <div class="form-group row">
+            <label for="post-fame" class="col-sm-3 col-form-label">보내는 사람의 명성</label>
+            <div class="col-sm-9">
+              <input type="number" id="post-fame" class="form-control" value="5000" min="0">
+            </div>
+          </div>
+
+          <div class="calc-btn-container text-right">
+            <button class="btn btn-primary" onclick="calcPostcard()">계산하기</button>
+          </div>
+
+          <div id="postcard-result" class="result-area mt-4" style="display: none;">
+            <h4>📊 계산 결과</h4>
+            <div class="result-box">
+              <div class="result-item"><strong>상대방 명성 차감 수치:</strong> -<span class="highlight-val" id="res-post-deduct">0</span> 명성</div>
+              <div class="result-hint mt-2 text-muted">※ 권위의 엽서 효과는 15일간 유지됩니다. 소수점 이하는 절사 처리되었습니다.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer class="modern-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>마피아계산기</h3>
+        <p>마피아42 서드파티 서비스</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/static/js/darkmode.js"></script>
+  <script src="/static/js/common-modern.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/calc.js"></script>
+</body>
+</html>

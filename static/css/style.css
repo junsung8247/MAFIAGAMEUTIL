@@ -1,0 +1,167 @@
+/* 모던 디자인 변수 호환 */
+/* common-modern.css의 변수를 사용하여 다크모드 및 테마 호환성 확보 */
+
+/* static/css/style.css */
+
+/* 기본 스타일 */
+  body {
+    font-family: 'Noto Sans KR', sans-serif !important;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    /* footer\uac00 static\uc774\ubbc0\ub85c padding-bottom \ubd88\ud544\uc694 */
+  }
+
+  /* 컨테이너 스타일 - Bootstrap과 호환 */
+  .container {
+    max-width: 1000px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* 페이지별로 flex가 필요한 경우에만 추가 클래스 사용 */
+  .container-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 제목 스타일 */
+  h1 {
+    font-size: 2em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  /* 버튼 스타일 */
+  button {
+    margin: 5px;
+  }
+
+  /* 테이블 스타일 */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th, .table td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .table th {
+    background-color: #e9ecef;
+  }
+
+  /* 모던 디자인 변수와의 충돌을 피하기 위해 구식 네비게이션 스타일 제거 */
+  /* common-modern.css의 모던 네비게이션 스타일을 사용 */
+
+  /* 모달 스타일 */
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-header, .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-title {
+    font-size: 1.5em;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+  }
+
+  /* 추가 스타일 */
+  .highlight {
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  /* footer 스타일 - 이제 common-modern.css의 modern-footer를 사용 */
+  /* 레거시 footer 지원을 위해 유지 */
+  footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    width: 100%;
+  }
+
+  footer .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 8px 0;
+  }
+
+  footer p {
+    margin-bottom: 2px;
+  }
+
+  .admin-container {
+    width: 300px;
+  }
+  
+  .admin-conatiner-component {
+    width: 300px;
+    padding-bottom: 20px;
+  }
+
+  /* contact-info 관련 스타일 */
+  .contact-info img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+  }
+  .contact-info a {
+    font-size: 18px;
+    text-decoration: none;
+    color: #333;
+  }
+  .contact-info a:hover {
+    text-decoration: underline;
+  }
+
+  /* footer 관련 스타일 - 이제 common-modern.css의 modern-footer 사용 */
+  /* 레거시 지원 제거됨 - 모든 페이지는 modern-footer 사용 */
+
+  /* card-button 관련 스타일 */
+  .card-button {
+    color: #000000;
+    height: 200px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .card-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  /* alert 관련 스타일 */
+  .alert {
+    position: relative;
+    width: 100%;
+    background-color: #aeeecb;
+    color: #1a7242;
+    border: 2px solid #8ad2aa;
+    padding: 10px;
+    text-align: center;
+    z-index: 1000;
+    margin-bottom: 0;
+  }
+  .alert .close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
