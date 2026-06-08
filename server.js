@@ -63,8 +63,29 @@ app.get('/list_event_files', (req, res) => {
 
 // 2. 개별 이벤트 상자 정보 조회
 app.get('/get_event_data/:eventId', (req, res) => {
-    const eventId = req.params.eventId;
-    const filePath = path.join(__dirname, 'data', 'events', `${eventId}.json`);
+    let eventId = req.params.eventId;
+    
+    // URL 디코딩 및 자소 분리(NFD) 문제를 해소하기 위한 NFC 정규화
+    eventId = decodeURIComponent(eventId).normalize('NFC');
+    
+    const eventsDir = path.join(__dirname, 'data', 'events');
+    const targetFileName = `${eventId}.json`;
+    let filePath = path.join(eventsDir, targetFileName);
+    
+    if (!fs.existsSync(filePath)) {
+        // 일부 파일의 자소 분리 현상 대비 풀스캔 매칭
+        try {
+            const files = fs.readdirSync(eventsDir);
+            const matchedFile = files.find(file => {
+                return file.normalize('NFC') === targetFileName;
+            });
+            if (matchedFile) {
+                filePath = path.join(eventsDir, matchedFile);
+            }
+        } catch (e) {
+            console.error('NFC 파일 매칭 중 오류:', e);
+        }
+    }
     
     if (!fs.existsSync(filePath)) {
         return res.status(404).json({ error: '해당 이벤트를 찾을 수 없습니다.' });

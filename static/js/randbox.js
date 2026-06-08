@@ -45,6 +45,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     return null;
   }
 
+  // UI 요소
+  const guestInfoPanel = document.getElementById('guest-info');
+  const userSavePanel = document.getElementById('user-save-panel');
+  const saveItemsBtn = document.getElementById('save-items-btn');
+
   // 로그인 상태 변경 시 내 아이템을 다시 불러오고 리스트를 갱신
   window.addEventListener('authStateChanged', async (e) => {
     try {
@@ -76,11 +81,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     added: new Set(),    // 새로 체크한 아이템 (item_id)
     removed: new Set()   // 체크 해제한 아이템 (item_id)
   };
-
-  // UI 요소
-  const guestInfoPanel = document.getElementById('guest-info');
-  const userSavePanel = document.getElementById('user-save-panel');
-  const saveItemsBtn = document.getElementById('save-items-btn');
 
   // 패널 표시 상태 업데이트
   function updatePanelVisibility() {
@@ -618,8 +618,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const eventId = eventSelect.value;
     fetch(`/get_event_data/${eventId}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('이벤트 정보를 불러오지 못했습니다.');
+        return res.json();
+      })
       .then(data => {
+        if (!data || !data.boxes) {
+          console.warn('[Randbox] 올바른 이벤트 상자 데이터가 아닙니다:', data);
+          return;
+        }
         boxTypeSelect.innerHTML = '';
         data.boxes.forEach(box => {
           const option = document.createElement("option");
@@ -634,6 +641,9 @@ document.addEventListener("DOMContentLoaded", async function () {
           targetOption.selected = true;
         }
         boxTypeSelect.dispatchEvent(new Event("change"));
+      })
+      .catch(err => {
+        console.error('[Randbox] 이벤트 로드 실패:', err);
       });
   });
 
