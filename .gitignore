@@ -6,5 +6,4 @@ data/events/
 data/profile_items_*.json
 static/images/ProfileCustomizer/
 static/images/EquipImage/
-static/images/GameResources/
 package-lock.json
