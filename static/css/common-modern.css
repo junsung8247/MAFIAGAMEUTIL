@@ -827,6 +827,7 @@ body.dark-mode .moon-icon,
 
 select.form-control {
   cursor: pointer;
+  height: auto !important;
 }
 
 /* ============================================
