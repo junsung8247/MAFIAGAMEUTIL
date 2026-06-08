@@ -63,31 +63,53 @@ app.get('/list_event_files', (req, res) => {
 
 // 2. 개별 이벤트 상자 정보 조회
 app.get('/get_event_data/:eventId', (req, res) => {
-    let eventId = req.params.eventId;
+    let rawEventId = req.params.eventId;
+    console.log(`[Server] get_event_data 요청 수신: rawEventId = "${rawEventId}"`);
     
-    // URL 디코딩 및 자소 분리(NFD) 문제를 해소하기 위한 NFC 정규화
-    eventId = decodeURIComponent(eventId).normalize('NFC');
+    let eventId = rawEventId;
+    try {
+        // 이미 디코딩되어 있을 수 있으므로 오류 방지 처리
+        if (eventId.includes('%')) {
+            eventId = decodeURIComponent(eventId);
+        }
+    } catch (e) {
+        console.error('[Server] URL 디코딩 오류:', e.message);
+    }
+    
+    eventId = eventId.normalize('NFC');
+    console.log(`[Server] NFC 정규화 완료: eventId = "${eventId}"`);
     
     const eventsDir = path.join(__dirname, 'data', 'events');
     const targetFileName = `${eventId}.json`;
     let filePath = path.join(eventsDir, targetFileName);
     
-    if (!fs.existsSync(filePath)) {
-        // 일부 파일의 자소 분리 현상 대비 풀스캔 매칭
+    console.log(`[Server] 찾으려는 파일 경로: "${filePath}"`);
+    
+    let isFound = fs.existsSync(filePath);
+    console.log(`[Server] fs.existsSync 1차 확인 결과: ${isFound}`);
+    
+    if (!isFound) {
         try {
             const files = fs.readdirSync(eventsDir);
+            console.log(`[Server] data/events 디렉토리 파일 총 개수: ${files.length}`);
             const matchedFile = files.find(file => {
-                return file.normalize('NFC') === targetFileName;
+                const isMatch = file.normalize('NFC') === targetFileName;
+                if (isMatch) {
+                    console.log(`[Server] NFC 매칭 파일 발견: "${file}"`);
+                }
+                return isMatch;
             });
             if (matchedFile) {
                 filePath = path.join(eventsDir, matchedFile);
+                isFound = true;
             }
         } catch (e) {
-            console.error('NFC 파일 매칭 중 오류:', e);
+            console.error('[Server] NFC 파일 매칭 중 오류:', e);
         }
     }
     
-    if (!fs.existsSync(filePath)) {
+    if (!isFound) {
+        console.warn(`[Server] 최종 파일 매칭 실패: "${targetFileName}"`);
         return res.status(404).json({ error: '해당 이벤트를 찾을 수 없습니다.' });
     }
 
@@ -96,6 +118,7 @@ app.get('/get_event_data/:eventId', (req, res) => {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.send(fileContent);
     } catch (e) {
+        console.error('[Server] 파일 읽기 실패:', e.message);
         res.status(500).json({ error: e.message });
     }
 });
