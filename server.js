@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const eventDataMap = require('./data/event_data_map.json');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -61,14 +62,13 @@ app.get('/list_event_files', (req, res) => {
     }
 });
 
-// 2. 개별 이벤트 상자 정보 조회
+// 2. 개별 이벤트 상자 정보 조회 (메모리 맵 사용)
 app.get('/get_event_data/:eventId', (req, res) => {
     let rawEventId = req.params.eventId;
     console.log(`[Server] get_event_data 요청 수신: rawEventId = "${rawEventId}"`);
     
     let eventId = rawEventId;
     try {
-        // 이미 디코딩되어 있을 수 있으므로 오류 방지 처리
         if (eventId.includes('%')) {
             eventId = decodeURIComponent(eventId);
         }
@@ -79,83 +79,52 @@ app.get('/get_event_data/:eventId', (req, res) => {
     eventId = eventId.normalize('NFC');
     console.log(`[Server] NFC 정규화 완료: eventId = "${eventId}"`);
     
-    const eventsDir = path.join(process.cwd(), 'data', 'events');
-    const targetFileName = `${eventId}.json`;
-    let filePath = path.join(eventsDir, targetFileName);
-    
-    console.log(`[Server] 찾으려는 파일 경로: "${filePath}"`);
-    
-    let isFound = fs.existsSync(filePath);
-    console.log(`[Server] fs.existsSync 1차 확인 결과: ${isFound}`);
-    
-    if (!isFound) {
-        try {
-            const files = fs.readdirSync(eventsDir);
-            console.log(`[Server] data/events 디렉토리 파일 총 개수: ${files.length}`);
-            const matchedFile = files.find(file => {
-                const isMatch = file.normalize('NFC') === targetFileName;
-                if (isMatch) {
-                    console.log(`[Server] NFC 매칭 파일 발견: "${file}"`);
-                }
-                return isMatch;
-            });
-            if (matchedFile) {
-                filePath = path.join(eventsDir, matchedFile);
-                isFound = true;
-            }
-        } catch (e) {
-            console.error('[Server] NFC 파일 매칭 중 오류:', e);
-        }
-    }
-    
-    if (!isFound) {
-        console.warn(`[Server] 최종 파일 매칭 실패: "${targetFileName}"`);
+    const eventData = eventDataMap[eventId];
+    if (!eventData) {
+        console.warn(`[Server] 메모리 맵 매칭 실패: "${eventId}"`);
         return res.status(404).json({ error: '해당 이벤트를 찾을 수 없습니다.' });
     }
 
-    try {
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        res.send(fileContent);
-    } catch (e) {
-        console.error('[Server] 파일 읽기 실패:', e.message);
-        res.status(500).json({ error: e.message });
-    }
+    res.json(eventData);
 });
 
-// 3. 특정 상자의 확률 아이템 상세 조회
+// 3. 특정 상자의 확률 아이템 상세 조회 (메모리 맵 사용)
 app.get('/get_items/:eventFile/:boxType', (req, res) => {
-    const { eventFile, boxType } = req.params;
-    const filePath = path.join(process.cwd(), 'data', 'events', `${eventFile}.json`);
+    let { eventFile, boxType } = req.params;
     
-    if (!fs.existsSync(filePath)) {
+    try {
+        if (eventFile.includes('%')) {
+            eventFile = decodeURIComponent(eventFile);
+        }
+    } catch (e) {
+        console.error('[Server] URL 디코딩 오류:', e.message);
+    }
+    
+    eventFile = eventFile.normalize('NFC');
+    
+    const eventData = eventDataMap[eventFile];
+    if (!eventData) {
         return res.status(404).json({ error: '이벤트를 찾을 수 없습니다.' });
     }
 
-    try {
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-        const data = JSON.parse(fileContent);
-        
-        const box = data.boxes.find(b => b.type === boxType);
-        if (!box) {
-            return res.status(404).json({ error: '상자 종류를 찾을 수 없습니다.' });
-        }
-
-        // 아이템 리스트 포맷 반환
-        const items = box.items.map((item, idx) => {
-            return {
-                item_id: item.item_id || item.id || (10000 + idx),
-                name: item.name,
-                chance: item.chance || item.drop_chance || 0,
-                equip: item.equip !== undefined ? item.equip : true
-            };
-        });
-
-        res.json(items);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
+    const box = eventData.boxes.find(b => b.type === boxType);
+    if (!box) {
+        return res.status(404).json({ error: '상자 종류를 찾을 수 없습니다.' });
     }
+
+    // 아이템 리스트 포맷 반환
+    const items = box.items.map((item, idx) => {
+        return {
+            item_id: item.item_id || item.id || (10000 + idx),
+            name: item.name,
+            chance: item.chance || item.drop_chance || 0,
+            equip: item.equip !== undefined ? item.equip : true
+        };
+    });
+
+    res.json(items);
 });
+
 
 // 4. 프로필 커스터마이저 카테고리별 자산 목록 조회
 app.get('/get_items/profile/:category', (req, res) => {
