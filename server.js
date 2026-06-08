@@ -47,7 +47,7 @@ app.get('/profile', (req, res) => {
 
 // 1. 이벤트 전체 목록 조회
 app.get('/list_event_files', (req, res) => {
-    const filePath = path.join(__dirname, 'data', 'events.json');
+    const filePath = path.join(process.cwd(), 'data', 'events.json');
     if (!fs.existsSync(filePath)) {
         return res.status(500).json({ error: '이벤트 목록 데이터가 없습니다.' });
     }
@@ -79,7 +79,7 @@ app.get('/get_event_data/:eventId', (req, res) => {
     eventId = eventId.normalize('NFC');
     console.log(`[Server] NFC 정규화 완료: eventId = "${eventId}"`);
     
-    const eventsDir = path.join(__dirname, 'data', 'events');
+    const eventsDir = path.join(process.cwd(), 'data', 'events');
     const targetFileName = `${eventId}.json`;
     let filePath = path.join(eventsDir, targetFileName);
     
@@ -126,7 +126,7 @@ app.get('/get_event_data/:eventId', (req, res) => {
 // 3. 특정 상자의 확률 아이템 상세 조회
 app.get('/get_items/:eventFile/:boxType', (req, res) => {
     const { eventFile, boxType } = req.params;
-    const filePath = path.join(__dirname, 'data', 'events', `${eventFile}.json`);
+    const filePath = path.join(process.cwd(), 'data', 'events', `${eventFile}.json`);
     
     if (!fs.existsSync(filePath)) {
         return res.status(404).json({ error: '이벤트를 찾을 수 없습니다.' });
@@ -160,7 +160,7 @@ app.get('/get_items/:eventFile/:boxType', (req, res) => {
 // 4. 프로필 커스터마이저 카테고리별 자산 목록 조회
 app.get('/get_items/profile/:category', (req, res) => {
     const { category } = req.params;
-    const mapPath = path.join(__dirname, 'data', 'profile_assets_map.json');
+    const mapPath = path.join(process.cwd(), 'data', 'profile_assets_map.json');
 
     if (!fs.existsSync(mapPath)) {
         return res.status(404).json({ error: '프로필 자산 맵 데이터가 없습니다.' });
