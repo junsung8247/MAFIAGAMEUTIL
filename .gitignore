@@ -4,6 +4,6 @@ node_modules/
 *.log
 data/events/
 data/profile_items_*.json
-static/images/ProfileCustomizer/
-static/images/EquipImage/
+# static/images/ProfileCustomizer/
+# static/images/EquipImage/
 package-lock.json
